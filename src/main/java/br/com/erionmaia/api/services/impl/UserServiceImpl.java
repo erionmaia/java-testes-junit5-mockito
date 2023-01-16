@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private ModelMapper mapper;
 
     @Override
-    public User finById(Integer id) {
+    public User findById(Integer id) {
         Optional<User> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
     }
@@ -42,6 +42,12 @@ public class UserServiceImpl implements UserService {
     public User update(UserDTO obj) {
         findByEmail(obj);
         return repository.save(mapper.map(obj, User.class));
+    }
+
+    @Override
+    public void delete(Integer id) {
+        findById(id);
+        repository.deleteById(id);
     }
 
     private void findByEmail(UserDTO obj) {
